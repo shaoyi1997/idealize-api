@@ -1,0 +1,12 @@
+# Unit test coverage files
+/coverage
+
+# Generated documentation
+/docs
+
+# Compiled JavaScript
+/dist
+
+# Dependency directory
+# https://www.npmjs.org/doc/misc/npm-faq.html
+node_modules
