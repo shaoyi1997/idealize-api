@@ -6,8 +6,8 @@ interface IdeaGetOptions extends AnyWhereOptions {
 }
 
 interface IdeaCreationParams {
+  title: string;
   description: string;
-  tags?: string[];
 }
 
 class IdeaController {
@@ -61,9 +61,7 @@ class IdeaController {
     return await Idea.update(params, {
       where: { ideaId },
       returning: true,
-    }).then(value => {
-      return value[1][0];
-    });
+    }).then(value => value[1][0]);
   }
 }
 

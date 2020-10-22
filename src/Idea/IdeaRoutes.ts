@@ -72,7 +72,7 @@ router.route('/id/:ideaId').put(async (req: Request, res: Response) => {
   await IdeaController.update(params, ideaId)
     .then(idea => {
       if (idea) {
-        res.status(200).json({ message: 'Idea successfully updated', idea });
+        res.status(200).json({ message: 'Idea successfully updated.', idea });
       } else {
         res.status(400).json({ error: 'Failed to update idea.' });
       }

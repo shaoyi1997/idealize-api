@@ -34,12 +34,6 @@ class Idea extends Model<Idea> {
     type: DataType.TEXT,
   })
   description: string;
-
-  // @Column({
-  //   comment: 'Tags that categorizes the idea',
-  //   type: DataType.ARRAY(DataType.TEXT),
-  // })
-  // tag: string[];
 }
 
 export default Idea;

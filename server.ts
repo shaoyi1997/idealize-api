@@ -1,4 +1,4 @@
-import * as config from 'config';
+import config from 'config';
 import { createServer } from 'http';
 import * as https from 'https';
 import * as fs from 'fs';

@@ -1,6 +1,6 @@
-import * as express from 'express';
-import * as cors from 'cors';
-import * as config from 'config';
+import express from 'express';
+import cors from 'cors';
+import config from 'config';
 import * as path from 'path';
 
 import Resources from './src';
@@ -34,7 +34,7 @@ const initApp = async () => {
       'Origin,X-Requested-With,Content-Type,Accept,Authorization',
     );
     res.header('Access-Control-Allow-Credentials', 'true');
-    await next();
+    next();
   };
   app.use(allowCrossDomain);
 
@@ -53,14 +53,17 @@ const initApp = async () => {
 const initRoute = async (app: express.Application) => {
   // mount root path
   app.get(
-    '/',
+    '/api',
     async (
       req: express.Request,
-      _res: express.Response,
+      res: express.Response,
       next: express.NextFunction,
     ) => {
       logger.info('Root path mounted');
-      await next();
+      res.status(200).json({
+        message: 'Idealize API',
+      });
+      next();
     },
   );
 
@@ -97,11 +100,13 @@ const initServices = async (app: express.Application) => {
     services[service] = moduleInstance;
   }
 
+  const concreteServices: Record<string, unknown> = {};
+
   logger.info('Starting services...');
   for (const service of listOfServices) {
     logger.info(`Starting service: ${service}`);
     try {
-      (services[service] as any) = await Promise.resolve(
+      (concreteServices[service] as any) = await Promise.resolve(
         services[service].start(app),
       );
     } catch (err) {
@@ -110,7 +115,26 @@ const initServices = async (app: express.Application) => {
     }
     logger.info(`Started service ${service}`);
   }
-  app.set('services', services);
+  app.set('services', concreteServices);
+
+  async function stopServices() {
+    logger.info('Stopping services...');
+    for (const service of listOfServices) {
+      logger.info(`Stopping service: ${service}`);
+      try {
+        if (services[service].stop) {
+          await Promise.resolve(services[service].stop(app));
+        }
+      } catch (err) {
+        logger.error(`Failed to stop service ${service}`, err);
+        throw err;
+      }
+      logger.info(`Stopped service ${service}`);
+    }
+  }
+
+  app.set('stop', stopServices);
+
   return app;
 };
 

@@ -1,7 +1,7 @@
 import * as express from 'express';
 import { ModelType } from 'sequelize-typescript';
 
-interface IResource<TModel = any> {
+interface IResource<TModel = unknown> {
   getModel: () => ModelType<TModel>;
 
   getRouter: () => express.Router;

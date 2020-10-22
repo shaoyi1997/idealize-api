@@ -1,11 +1,18 @@
 import { Application } from 'express';
-import { Sequelize, ISequelizeConfig, DataType } from 'sequelize-typescript';
-import * as config from 'config';
+import {
+  Sequelize,
+  ISequelizeConfig,
+  DataType,
+  Model,
+} from 'sequelize-typescript';
+import config from 'config';
 
 import { Service } from '../app';
 import IResource from '../src/interface/IResource';
 
-function getQuotedTableName(tableNameFromModel: string | object) {
+function getQuotedTableName(
+  tableNameFromModel: string | Record<string, unknown>,
+) {
   if (typeof tableNameFromModel === 'object') {
     const { tableName, schema, delimiter } = tableNameFromModel as any;
     return `"${schema}"${delimiter}"${tableName}"`;
@@ -43,12 +50,12 @@ const SequelizeService: Service<Sequelize> = {
 
     const resources = app.get('resources');
     const models = Object.values(resources).map(
-      (resource: IResource) => resource.getModel() as any,
+      (resource: IResource) => resource.getModel() as typeof Model,
     );
     sequelize.addModels(models);
 
     // Set the default value on the database side if column has default value of DataTypes.UUIDV4.
-    models.forEach(model => {
+    for (const model of models) {
       const uuidAttributes = Object.values(model.attributes as any).filter(
         (attribute: any) =>
           attribute.defaultValue &&
@@ -59,7 +66,7 @@ const SequelizeService: Service<Sequelize> = {
           uuidAttributes.map((attribute: any) =>
             sequelize.query(
               `ALTER TABLE ${getQuotedTableName(
-                model.getTableName(),
+                model.getTableName() as string,
               )} ALTER COLUMN "${
                 attribute.fieldName
               }" SET DEFAULT gen_random_uuid()`,
@@ -67,13 +74,13 @@ const SequelizeService: Service<Sequelize> = {
           ),
         ),
       );
-      model.sync();
-    });
+      await model.sync({
+        force: process.env.NODE_ENV === 'test',
+      });
+    }
     return sequelize;
   },
   stop: async (app: Application) => {
-    const logger = app.get('logger');
-    logger.info('Stopping sequelize');
     const sequelize = app.get('services').sequelize;
     sequelize.close();
   },
