@@ -7,9 +7,11 @@ import { getProjectRoot } from './ProjectUtils';
 const { combine, colorize, printf, errors } = winston.format;
 
 // Create the logs directory.
-const logsPath = path.join(getProjectRoot(), 'logs');
-if (!fs.existsSync(logsPath)) {
-  fs.mkdirSync(logsPath);
+if (!process.env.IS_SERVERLESS) {
+  const logsPath = path.join(getProjectRoot(), 'logs');
+  if (!fs.existsSync(logsPath)) {
+    fs.mkdirSync(logsPath);
+  }
 }
 
 // Logging format
@@ -43,7 +45,7 @@ if (process.env.NODE_ENV !== 'production') {
  * If in production, then log to the `file` with the format:
  * `${info.level}: ${info.message} JSON.stringify({ ...rest }) `
  */
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'production' && !process.env.IS_SERVERLESS) {
   logger.add(
     new winston.transports.File({
       filename: './logs/combined.log',

@@ -4,7 +4,6 @@
     "allowJs": true,
     "alwaysStrict": true,
     "module": "commonjs",
-    "incremental": true,
     "outDir": "dist",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
@@ -18,5 +17,5 @@
     "typeRoots": ["./node_modules/@types", "./typings"],
     "esModuleInterop": true,
   },
-  "exclude": ["coverage", "dist", "node_modules"]
+  "exclude": ["coverage", "dist", "node_modules", "**/*.spec.ts"]
 }

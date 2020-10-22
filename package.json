@@ -6,8 +6,6 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "@typescript-eslint/eslint-plugin": "^4.5.0",
-    "@typescript-eslint/parser": "^4.5.0",
     "config": "^3.3.1",
     "cors": "^2.8.5",
     "express": "^4.17.1",
@@ -19,7 +17,9 @@
     "reflect-metadata": "^0.1.13",
     "sequelize": "^4.37.10",
     "sequelize-typescript": "^0.6.7",
-    "winston": "^3.3.3"
+    "serverless-http": "^2.6.0",
+    "winston": "^3.3.3",
+    "typescript": "^3.9.6"
   },
   "devDependencies": {
     "@types/bluebird": "^3.5.32",
@@ -30,16 +30,19 @@
     "@types/node": "^14.0.24",
     "@types/supertest": "^2.0.10",
     "@types/validator": "^13.1.0",
+    "@typescript-eslint/eslint-plugin": "^4.5.0",
+    "@typescript-eslint/parser": "^4.5.0",
     "eslint": "^7.4.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",
     "jest": "^26.6.0",
     "nodemon": "^2.0.4",
     "prettier": "^2.0.5",
+    "serverless-offline": "^6.8.0",
+    "serverless-plugin-typescript": "^1.1.9",
     "supertest": "^5.0.0",
     "ts-jest": "^26.4.1",
-    "tsc-watch": "^4.2.9",
-    "typescript": "^3.9.6"
+    "tsc-watch": "^4.2.9"    
   },
   "scripts": {
     "build": "tsc",

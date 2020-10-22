@@ -10,7 +10,7 @@ let agent: supertest.SuperTest<supertest.Test>;
 
 beforeAll(async done => {
   app = await initialize();
-  server = app.listen(8080, err => {
+  server = app.listen(5000, err => {
     if (err) {
       return done(err);
     }
@@ -75,13 +75,13 @@ describe('PUT /idea/id', () => {
 });
 
 describe('DELETE /idea/id', () => {
-  it('should respond with status 200 and the deleted idea', async () => {
+  it('should respond with status 200 and successful deletion message', async () => {
     const response = await agent.delete(`/api/idea/id/${updatedIdea?.ideaId}`);
     expect(response.status).toEqual(200);
     expect(response.body.message).toEqual('Idea successfully deleted.');
   });
 
-  it('GET after DELETE should respond with status 404 and the deleted idea', async () => {
+  it('GET after DELETE should respond with status 404 and not found message', async () => {
     const response = await agent.get(`/api/idea/id/${updatedIdea?.ideaId}`);
     expect(response.status).toEqual(400);
     expect(response.body).toEqual({ error: 'No idea found.' });

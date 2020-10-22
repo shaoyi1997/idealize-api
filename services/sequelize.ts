@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import { Application } from 'express';
 import {
   Sequelize,
@@ -22,16 +23,25 @@ function getQuotedTableName(
 
 const SequelizeService: Service<Sequelize> = {
   start: async (app: Application) => {
+    const isServerless = process.env.IS_SERVERLESS;
     const logger = app.get('logger');
     logger.info('Initializing sequelize');
+
+    const host = isServerless
+      ? 'lallah.db.elephantsql.com'
+      : process.env.DATABASE_URL
+      ? 'postgres'
+      : 'localhost';
     const sequelizeOptions: ISequelizeConfig = config.get('sequelize.options');
     const sequelize = new Sequelize({
-      database: config.get('sequelize.database'),
-      username: config.get('sequelize.username'),
-      password: config.get('sequelize.password'),
+      database: isServerless ? 'pirmtevg' : config.get('sequelize.database'),
+      username: isServerless ? 'pirmtevg' : config.get('sequelize.username'),
+      password: isServerless
+        ? 'o9FUxGRB-IMOcpDvcAqkilJSVApHGIOC'
+        : config.get('sequelize.password'),
       dialectOptions: config.get('sequelize.dialectOptions'),
       ...sequelizeOptions,
-      host: process.env.DATABASE_URL ? 'postgres' : 'localhost',
+      host: host,
       define: {
         freezeTableName: false,
         timestamps: true,

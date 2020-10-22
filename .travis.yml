@@ -5,9 +5,12 @@ services:
   - postgresql
 install:
   - yarn install
+  - yarn global add serverless
 before_script:
   - sudo -u postgres createuser --superuser idealize
   - sudo -u postgres createdb --owner=idealize idealize
 script:
   - yarn lint
   - yarn test
+after_success:
+  - serverless deploy
