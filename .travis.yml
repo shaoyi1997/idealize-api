@@ -1,0 +1,13 @@
+language: node_js
+node_js:
+  - '12.18.3'
+services:
+  - postgresql
+install:
+  - yarn install
+before_script:
+  - sudo -u postgres createuser --superuser idealize
+  - sudo -u postgres createdb --owner=idealize idealize
+script:
+  - yarn lint
+  - yarn test
