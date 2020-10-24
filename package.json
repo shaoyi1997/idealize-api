@@ -46,7 +46,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "start": "node ./dist/server.js",
+    "start": "tsc && node ./dist/server.js",
     "start:dev": "tsc-watch --onFirstSuccess \"nodemon ./dist/server.js\"",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx .",
     "test": "jest --config jest.config.json --no-cache --detectOpenHandles"

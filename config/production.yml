@@ -1,0 +1,28 @@
+# Express HTTP server configuration
+# See http://nodejs.org/api/http.html for HTTP options.
+# See http://nodejs.org/api/https.html for HTTPS options.
+express:
+  http:
+    enabled: true
+    host: '0.0.0.0'
+    port: 8080
+  https:
+    enabled: false
+    host: '0.0.0.0'
+    port: 8081
+
+services:
+  - sequelize
+
+# Sequelize ORM configuration
+# See http://sequelize.readthedocs.org/en/latest/api/sequelize/ for options.
+sequelize:
+  database: idealize
+  username: idealize
+  password: idealize
+  dialectOptions:
+    ssl: false
+  options:
+    dialect: postgres
+    port: 5432
+    isolationLevel: READ COMMITTED

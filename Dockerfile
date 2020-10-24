@@ -1,5 +1,5 @@
 # Use the official image as a parent image.
-FROM node:current-slim
+FROM node:current-alpine
 
 # Copy the file from your host to your current location.
 COPY ["package.json", "yarn.lock", "/app/"]
@@ -16,7 +16,5 @@ COPY . .
 # Add metadata to the image to describe which port the container is listening on at runtime.
 EXPOSE 8080
 
-# WORKDIR ./idealize-api
-
 # Run the specified command within the container.
-CMD [ "yarn", "start" ]
+CMD ["yarn", "start:dev"]
