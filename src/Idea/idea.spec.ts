@@ -20,12 +20,10 @@ beforeAll(async done => {
 });
 
 describe('GET /idea', () => {
-  it('should respond with status 200 and an empty array of ideas', async () => {
+  it('should respond with status 200 and an array of ideas', async () => {
     const response = await agent.get('/api/idea');
     expect(response.status).toEqual(200);
-    expect(response.body).toEqual({
-      ideas: [],
-    });
+    expect(response.body).toHaveProperty('ideas');
   });
 });
 
@@ -81,7 +79,7 @@ describe('DELETE /idea/id', () => {
     expect(response.body.message).toEqual('Idea successfully deleted.');
   });
 
-  it('GET after DELETE should respond with status 404 and not found message', async () => {
+  it('GET after DELETE should respond with status 400 and not found message', async () => {
     const response = await agent.get(`/api/idea/id/${updatedIdea?.ideaId}`);
     expect(response.status).toEqual(400);
     expect(response.body).toEqual({ error: 'No idea found.' });
